@@ -1,0 +1,51 @@
+.show-user {
+  min-height: 100vh;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("../asset/user-bg.webp");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.table-info {
+  min-width: 100%;
+  text-align: center;
+}
+
+.std-heading {
+  font-family: "Source Serif Pro", serif;
+  text-align: center;
+  font-size: 3rem;
+  color: white;
+  padding: 50px;
+}
+
+.styled-table {
+  border-collapse: collapse;
+  font-size: 1em;
+  font-family: sans-serif;
+
+  width: 60%;
+  margin: 0 auto;
+  box-shadow: 0 0 40px rgba(77, 139, 219, 0.3);
+}
+.styled-table thead tr {
+  background-color: #009879;
+  color: #ffffff;
+  text-align: center;
+  font-size: large;
+}
+th,
+td,
+tr {
+  padding: 12px 15px;
+}
+
+td {
+  background: rgba(119, 119, 131, 0.75);
+  border: 1px solid rgba(252, 243, 243, 0.1);
+  color: rgb(196, 240, 230);
+  font-family: "Times New Roman", Times, serif;
+  border-radius: 4px;
+  box-sizing: border-box;
+  outline: 0;
+  font-size: large;
+}
