@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import UserTable from "./UserTable";
 import "./User.css";
+import FarmerDetails from "./FarmerDetails";
 const User = () => {
   const [userData, setUserData] = useState([]);
   useEffect(() => {
     axios
-      .get(`https://stu-management-system.herokuapp.com/user/`)
+      .get(`https://farmer-registration-portal.herokuapp.com/showall`)
       .then((res) => {
         const data = res.data;
         setUserData(data);
+        console.log(data);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -17,8 +18,8 @@ const User = () => {
   return (
     <>
       <div className="show-user">
-        <h2 className="std-heading">Student Details</h2>
-        <UserTable data={userData} />
+        <h2 className="std-heading">Farmer Details</h2>
+        <FarmerDetails data={userData} />
       </div>
     </>
   );

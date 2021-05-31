@@ -1,9 +1,13 @@
 import React from "react";
-import TextField from "@material-ui/core/TextField";
 
+import TextField from "@material-ui/core/TextField";
+// const handleInputChange = ({touched[field.name],errors[field.name]}) => {
+//   errors[field.name]
+// }
 const CustomTextInput = ({
   label,
   field,
+  values,
 
   form: { touched, errors },
 }) => {
@@ -11,11 +15,13 @@ const CustomTextInput = ({
     <>
       <TextField
         className="field"
-        error={touched[field.name] && errors[field.name]}
+        error={touched[field.name] && Boolean(errors[field.name])}
+        // onchange={handleInputChange(touched[field.name], errors[field.name])}
         id="outlined-error-helper-text"
         label={label}
-        defaultValue=""
-        helperText={errors[field.name] ? `${errors[field.name]}` : ""}
+        defaultValue={values[field.name]}
+        // helperText={errors[field.name] ? `${errors[field.name]}` : ""}
+        helperText={touched[field.name] && errors[field.name]}
         variant="outlined"
       />
     </>

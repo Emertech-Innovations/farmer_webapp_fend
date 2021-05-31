@@ -1,15 +1,14 @@
 .reg-main {
   min-height: 100vh;
-  /* background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)),
-    url("../asset/temp_bg.jpg");
-  background-size: cover;
-  background-repeat: no-repeat;
-  position: relative; */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: black;
+  /* background-image: linear-gradient(
+    to bottom,
+    rgba(204, 202, 238, 0.5),
+    rgba(27, 47, 228, 0.5)
+  ); */
 }
 
 .form-wrapper {
@@ -23,12 +22,11 @@
   display: flex;
   flex-direction: column;
   background-color: white;
-  /* background: rgba(255, 255, 255, 0.1); */
   box-shadow: 0 8px 300px 0 rgba(149, 155, 241, 0.37);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(172, 6, 6, 0.18);
 }
 
 .label {
@@ -39,19 +37,15 @@
 }
 
 .field {
-  background: rgba(121, 133, 189, 0.1);
   border: 1px solid rgba(252, 243, 243, 0.1);
   color: white;
   font-family: "Times New Roman", Times, serif;
   width: 100% !important;
   padding: 8px 10px;
   margin: 8px 0;
-  /* display: inline-block; */
-
   border-radius: 4px;
   box-sizing: border-box;
   outline: 0;
-
   font-size: large;
 }
 
@@ -116,5 +110,12 @@
 .first_input {
   display: flex;
   gap: 15px;
-  /* justify-content: space-between; */
+}
+.reg_heading {
+  font-family: "Source Serif Pro", serif;
+  text-align: center;
+  font-size: 3rem;
+  color: black;
+  padding: 10px;
+  font-weight: bold;
 }

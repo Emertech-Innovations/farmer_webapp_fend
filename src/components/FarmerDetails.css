@@ -1,0 +1,31 @@
+.heading {
+  display: flex;
+  gap: 15px;
+
+  width: 80%;
+}
+.name {
+  font-size: 15px;
+  font-weight: bold;
+}
+.details {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding-left: 50px;
+}
+.details > h5 {
+  padding: 3px;
+
+  gap: 20px;
+  display: flex;
+}
+.details > h5 > b {
+  flex: 0.2;
+  color: rgb(224, 69, 69);
+}
+.details > h5 > span {
+  flex: 0.8;
+  font-weight: lighter;
+  color: blue;
+}

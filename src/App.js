@@ -2,10 +2,11 @@ import React from "react";
 import { BrowserRouter, Switch, Route, NavLink } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import "./App.css";
+import FarmerRegister from "./components/FarmerRegister";
 
-import Register from "./components/Register";
 import User from "./components/User";
 import Logo from "./asset/logo.svg";
+import GitLogo from "./asset/github.svg";
 const App = () => {
   return (
     <>
@@ -23,6 +24,12 @@ const App = () => {
             </div>
 
             <div className="links">
+              <a
+                className="git_logo"
+                href="https://github.com/Emertech-Innovations"
+              >
+                <img src={GitLogo} alt="" />
+              </a>
               <NavLink className="nav_link" to="/">
                 <Button
                   className="btn_text"
@@ -47,8 +54,8 @@ const App = () => {
           </div>
 
           <Switch>
-            <Route path="/" exact component={Register} />
-            <Route path="/register" exact component={Register} />
+            <Route path="/" exact component={FarmerRegister} />
+            <Route path="/register" exact component={FarmerRegister} />
             <Route path="/user" exact component={User} />
           </Switch>
         </BrowserRouter>

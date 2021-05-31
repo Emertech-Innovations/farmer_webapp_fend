@@ -1,7 +1,7 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, Field } from "formik";
 import * as yup from "yup";
 import "./Register.css";
 import CustomTextInput from "./CustomTextInput";
@@ -12,18 +12,41 @@ const Register = () => {
   const emailRegExp = /^([a-zA-Z0-9-.]+)@([a-zA-Z0-9-.]+).([a-zA-Z]{2,5})$/;
   const phoneRegExp =
     /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+  const aadharRegExp = /^[2-9]{1}[0-9]{3}[0-9]{4}[0-9]{4}$/;
   return (
     <>
       <div className="reg-main">
         <div className="form-wrapper">
           <Formik
-            initialValues={{ name: "", email: "", phone: "", gender: "" }}
+            initialValues={{
+              name: "",
+              // gender: "",
+              // address: "",
+              aadhar: "",
+              // dob: "",
+              // age: "",
+              // state: "",
+              // district: "",
+              // tahshil: "",
+              // village: "",
+              // pin_code: "",
+              email: "",
+              phone: "",
+              // alternate_phone: "",
+              // area: "",
+              // soil: "",
+              // crops: "",
+            }}
             validationSchema={yup.object({
               name: yup.string().required("Please enter name"),
               email: yup
                 .string()
                 .matches(emailRegExp, "Email  is invalid")
                 .required("Please enter email"),
+              aadhar: yup
+                .string()
+                .matches(aadharRegExp, "Aadhar no is invalid")
+                .required("Please enter aadhar no"),
               phone: yup
                 .string()
                 .matches(phoneRegExp, "Phone number is invalid")
@@ -32,13 +55,27 @@ const Register = () => {
             onSubmit={(values, { setSubmitting, resetForm }) => {
               const payload = {
                 name: values.name,
+                // gender: values.gender,
+                // address: values.address,
+                aadhar: values.aadhar,
+                // dob: values.dob,
+                // age: values.age,
+                // state: values.state,
+                // district: values.district,
+                // tahshil: values.tahshil,
+                // village: values.village,
+                // pin_code: values.pin_code,
                 email: values.email,
                 phone: values.phone,
+                // alternate_phone: values.alternate_phone,
+                // area: values.area,
+                // soil: values.soil,
+                // crops: values.crops,
               };
               // console.log(JSON.stringify(payload, null, 2));
               axios
                 .post(
-                  `https://stu-management-system.herokuapp.com/user/register`,
+                  `https://farmer-registration-portal.herokuapp.com/register`,
                   payload
                 )
                 .then(() => history.push("/user"))
@@ -173,7 +210,7 @@ const Register = () => {
                       component={CustomTextInput}
                     />
                   </Grid>
-                  <Grid item xs={4}>
+                  {/* <Grid item xs={4}>
                     <Field
                       label="Alternate Phone no:"
                       className="field"
@@ -181,10 +218,10 @@ const Register = () => {
                       name="alternate_phone"
                       component={CustomTextInput}
                     />
-                  </Grid>
+                  </Grid> */}
                 </div>
 
-                <div className="first_input">
+                {/* <div className="first_input">
                   <Grid item xs={4}>
                     <Field
                       className="field"
@@ -212,7 +249,7 @@ const Register = () => {
                       component={CustomTextInput}
                     />
                   </Grid>
-                </div>
+                </div> */}
 
                 <div className="btn-wrapper">
                   <button className="btn" type="submit">
