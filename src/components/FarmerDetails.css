@@ -29,3 +29,11 @@
   font-weight: lighter;
   color: blue;
 }
+.crops__list {
+  list-style: none;
+  display: flex;
+  flex: 0.8;
+  font-weight: lighter;
+  color: blue;
+  gap: 6px;
+}

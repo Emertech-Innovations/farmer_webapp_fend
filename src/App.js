@@ -10,7 +10,7 @@ import GitLogo from "./asset/github.svg";
 const App = () => {
   return (
     <>
-      <div>
+      <div className="main__bg">
         <BrowserRouter>
           <div className="nav_bar">
             <div className="brand">

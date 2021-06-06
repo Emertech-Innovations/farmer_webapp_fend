@@ -96,7 +96,11 @@ const FarmerDetails = ({ data }) => {
               </h5>
               <h5>
                 <b>Total Crops:</b>
-                <span> {farmer.crops}</span>
+                <div className="crops__list">
+                  {farmer.crops.map((crop, index) => (
+                    <li key={index}>{crop},</li>
+                  ))}
+                </div>
               </h5>
             </div>
           </AccordionDetails>

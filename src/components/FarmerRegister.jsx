@@ -1,7 +1,13 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
+// import { useHistory } from "react-router-dom";
 import axios from "axios";
 import TextField from "@material-ui/core/TextField";
+import Chip from "@material-ui/core/Chip";
+import Input from "@material-ui/core/Input";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
+import MenuItem from "@material-ui/core/MenuItem";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
 
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -12,7 +18,55 @@ import Grid from "@material-ui/core/Grid";
 import FormControl from "@material-ui/core/FormControl";
 
 const FarmerRegister = () => {
-  const history = useHistory();
+  const useStyles = makeStyles((theme) => ({
+    formControl: {
+      margin: theme.spacing(1),
+      minWidth: 120,
+      maxWidth: 300,
+    },
+    chips: {
+      display: "flex",
+      flexWrap: "wrap",
+    },
+    chip: {
+      margin: 2,
+    },
+    noLabel: {
+      marginTop: theme.spacing(3),
+    },
+  }));
+  const crops = ["Wheat", "Rice", "SugarCane", "Bajara", "Jwari"];
+  const classes = useStyles();
+  const theme = useTheme();
+  const [cropName, setCropName] = React.useState([]);
+  const handleChange = (event) => {
+    setCropName(event.target.value);
+  };
+  const handleChangeMultiple = (event) => {
+    const { options } = event.target;
+    const value = [];
+    for (let i = 0, l = options.length; i < l; i += 1) {
+      if (options[i].selected) {
+        value.push(options[i].value);
+      }
+    }
+    setCropName(value);
+  };
+  function getStyles(name, cropName, theme) {
+    return {
+      fontWeight:
+        cropName.indexOf(name) === -1
+          ? theme.typography.fontWeightRegular
+          : theme.typography.fontWeightMedium,
+    };
+  }
+  const [openSuccess, setOpenSuccess] = React.useState(false);
+  const [openError, setOpenError] = React.useState(false);
+  function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  }
+
+  // const history = useHistory();
   const emailRegExp = /^([a-zA-Z0-9-.]+)@([a-zA-Z0-9-.]+).([a-zA-Z]{2,5})$/;
   const phoneRegExp =
     /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -51,7 +105,7 @@ const FarmerRegister = () => {
       .matches(phoneRegExp, "Phone number is invalid"),
     area: yup.string().required("Please enter area"),
     soil: yup.string().required("Please enter soil"),
-    crops: yup.string().required("Please enter crops"),
+    crops: yup.array().required("Please enter crops"),
   });
   const formik = useFormik({
     initialValues: {
@@ -71,7 +125,7 @@ const FarmerRegister = () => {
       alternate_phone: "",
       area: "",
       soil: "",
-      crops: "",
+      crops: [],
     },
     validationSchema: validationSchema,
     onSubmit: (values, { setSubmitting, resetForm }) => {
@@ -92,16 +146,20 @@ const FarmerRegister = () => {
         alternate_phone: values.alternate_phone,
         area: values.area,
         soil: values.soil,
-        crops: values.crops,
+        crops: cropName,
       };
       axios
         .post(
           `https://farmer-registration-portal.herokuapp.com/register`,
           payload
         )
-        .then(() => history.push("/user"))
-        .catch((err) => console.log(err));
-      resetForm();
+        .then(() => {
+          setOpenSuccess(true);
+        })
+        .catch((err) => setOpenError(true));
+      setTimeout(() => {
+        resetForm();
+      }, 4000);
       setSubmitting(false);
     },
   });
@@ -133,6 +191,7 @@ const FarmerRegister = () => {
                       Gender
                     </InputLabel>
                     <Select
+                      native
                       label="Gender"
                       inputProps={{
                         name: "gender",
@@ -146,7 +205,7 @@ const FarmerRegister = () => {
                       helperText={formik.touched.gender && formik.errors.gender}
                       variant="outlined"
                     >
-                      {/* <option aria-label={`$label`} value="" /> */}
+                      <option aria-label="Gender" value="" />
                       <option value="male">Male</option>
                       <option value="female">Female</option>
                       <option value="other">Other</option>
@@ -356,7 +415,7 @@ const FarmerRegister = () => {
                   className="field"
                   id="area"
                   name="area"
-                  label="Total Area:"
+                  label="Total Area(in acres):"
                   type="text"
                   value={formik.values.area}
                   onChange={formik.handleChange}
@@ -366,32 +425,69 @@ const FarmerRegister = () => {
                 />
               </Grid>
               <Grid item xs={4}>
-                <TextField
-                  className="field"
-                  id="soil"
-                  name="soil"
-                  label="Soil:"
-                  type="text"
-                  value={formik.values.soil}
-                  onChange={formik.handleChange}
-                  error={formik.touched.soil && Boolean(formik.errors.soil)}
-                  helperText={formik.touched.soil && formik.errors.soil}
-                  variant="outlined"
-                />
+                <>
+                  <FormControl variant="outlined" className="field">
+                    <InputLabel htmlFor="outlined-age-native-simple">
+                      Type of Soil
+                    </InputLabel>
+                    <Select
+                      native
+                      label="Type of Soil"
+                      inputProps={{
+                        name: "soil",
+                        id: "outlined-age-native-simple",
+                      }}
+                      value={formik.values.soil}
+                      onChange={formik.handleChange}
+                      error={formik.touched.soil && Boolean(formik.errors.soil)}
+                      helperText={formik.touched.soil && formik.errors.soil}
+                      variant="outlined"
+                    >
+                      <option aria-label="Soil" value="" />
+                      <option value="red">Red</option>
+                      <option value="black">Black</option>
+                      <option value="other">Other</option>
+                    </Select>
+                  </FormControl>
+                </>
               </Grid>
               <Grid item xs={4}>
-                <TextField
-                  className="field"
-                  id="crops"
-                  name="crops"
-                  label="List of Crops:"
-                  type="text"
-                  value={formik.values.crops}
-                  onChange={formik.handleChange}
-                  error={formik.touched.crops && Boolean(formik.errors.crops)}
-                  helperText={formik.touched.crops && formik.errors.crops}
-                  variant="outlined"
-                />
+                <FormControl variant="outlined" className="field">
+                  <InputLabel id="demo-mutiple-chip-label">
+                    Total Crops
+                  </InputLabel>
+                  <Select
+                    labelId="demo-mutiple-chip-label"
+                    id="demo-mutiple-chip"
+                    multiple
+                    value={cropName}
+                    onChange={handleChange}
+                    input={<Input id="select-multiple-chip" />}
+                    renderValue={(selected) => (
+                      <div className={classes.chips}>
+                        {selected.map((value) => (
+                          <Chip
+                            key={value}
+                            label={value}
+                            className={classes.chip}
+                          />
+                        ))}
+                      </div>
+                    )}
+                    variant="outlined"
+                  >
+                    {crops.map((crop) => (
+                      <MenuItem
+                        key={crop}
+                        value={crop}
+                        style={getStyles(crop, cropName, theme)}
+                        onChange={handleChangeMultiple}
+                      >
+                        {crop}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
               </Grid>
             </div>
             <div className="btn-wrapper">
@@ -400,6 +496,20 @@ const FarmerRegister = () => {
               </button>
             </div>
           </form>
+          <Snackbar
+            open={openError}
+            autoHideDuration={6000}
+            // onClose={handleClose}
+          >
+            <Alert severity="error">Something went wrong !</Alert>
+          </Snackbar>
+          <Snackbar
+            open={openSuccess}
+            autoHideDuration={6000}
+            // onClose={handleClose}
+          >
+            <Alert severity="success">Registration successful !</Alert>
+          </Snackbar>
         </div>
       </div>
     </>
