@@ -55,7 +55,7 @@
   margin: 0 auto;
 }
 
-.btn {
+.btn_submit {
   color: white;
   padding: 10px;
   border-radius: 4px;
@@ -66,14 +66,14 @@
   transition: all 0.5s;
 }
 
-.btn span {
+.btn_submit span {
   cursor: pointer;
   display: inline-block;
   position: relative;
   transition: 0.5s;
 }
 
-.btn span:after {
+.btn_submit span:after {
   content: "»";
   position: absolute;
   opacity: 0;
@@ -81,20 +81,20 @@
   right: -20px;
   transition: 0.5s;
 }
-.btn {
+.btn_submit {
   text-align: center;
   cursor: pointer;
   font-size: 22px;
 }
-.btn:hover span {
+.btn_submit:hover span {
   padding-right: 25px;
 }
 
-.btn:hover span:after {
+.btn_submit:hover span:after {
   opacity: 1;
   right: 0;
 }
-.btn:hover {
+.btn_submit:hover {
   opacity: 1;
 }
 
@@ -113,4 +113,21 @@
   color: black;
   padding: 10px;
   font-weight: bold;
+}
+.reset {
+  margin-top: -50px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn_loading {
+  color: white;
+  padding: 10px;
+  border-radius: 4px;
+  background-color: #cdda25;
+  opacity: 0.8;
+  border: none;
+  outline: none;
+  transition: all 0.5s;
+  font-size: 22px;
 }

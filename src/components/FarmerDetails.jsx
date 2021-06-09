@@ -44,7 +44,7 @@ const FarmerDetails = ({ data }) => {
               </h5>
               <h5>
                 <b>Aadhar No:</b>
-                <span> {farmer.name}</span>
+                <span> {farmer.aadhar}</span>
               </h5>
               <h5>
                 <b>Date of Birth:</b>

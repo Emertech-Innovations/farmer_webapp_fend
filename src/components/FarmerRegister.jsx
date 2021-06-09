@@ -8,6 +8,9 @@ import { makeStyles, useTheme } from "@material-ui/core/styles";
 import MenuItem from "@material-ui/core/MenuItem";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
+import Button from "@material-ui/core/Button";
+import Backdrop from "@material-ui/core/Backdrop";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -19,6 +22,10 @@ import FormControl from "@material-ui/core/FormControl";
 
 const FarmerRegister = () => {
   const useStyles = makeStyles((theme) => ({
+    backdrop: {
+      zIndex: theme.zIndex.drawer + 1,
+      color: "#fff",
+    },
     formControl: {
       margin: theme.spacing(1),
       minWidth: 120,
@@ -42,6 +49,10 @@ const FarmerRegister = () => {
   const handleChange = (event) => {
     setCropName(event.target.value);
   };
+  const handleClose = () => {
+    setOpenError(false);
+    setOpenSuccess(false);
+  };
   const handleChangeMultiple = (event) => {
     const { options } = event.target;
     const value = [];
@@ -51,6 +62,15 @@ const FarmerRegister = () => {
       }
     }
     setCropName(value);
+  };
+  const reset = () => {
+    formik.resetForm();
+  };
+  const addAcres = () => {
+    let acre = formik.values.area;
+    acre = acre + " acres";
+
+    formik.values.area = acre;
   };
   function getStyles(name, cropName, theme) {
     return {
@@ -68,8 +88,9 @@ const FarmerRegister = () => {
 
   // const history = useHistory();
   const emailRegExp = /^([a-zA-Z0-9-.]+)@([a-zA-Z0-9-.]+).([a-zA-Z]{2,5})$/;
-  const phoneRegExp =
-    /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+  const phoneRegExp = /^([+][9][1]|[9][1]|[0]){0,1}([7-9]{1})([0-9]{9})$/;
+  // /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+
   const aadharRegExp = /^[2-9]{1}[0-9]{3}[0-9]{4}[0-9]{4}$/;
   const pinRegExp = /^[1-9]{1}[0-9]{2}[0-9]{3}$/;
 
@@ -82,7 +103,7 @@ const FarmerRegister = () => {
       .matches(aadharRegExp, "Aadhar no is invalid")
       .required("Please enter aadhar no"),
     dob: yup.string().required("Please enter dob"),
-    age: yup.string().required("Please enter age"),
+    age: yup.number().required("Please enter age"),
     state: yup.string().required("Please enter state"),
     district: yup.string().required("Please enter district"),
     tahshil: yup.string().required("Please enter tahshil"),
@@ -128,7 +149,7 @@ const FarmerRegister = () => {
       crops: [],
     },
     validationSchema: validationSchema,
-    onSubmit: (values, { setSubmitting, resetForm }) => {
+    onSubmit: async (values, { setSubmitting, resetForm }) => {
       const payload = {
         name: values.name,
         gender: values.gender,
@@ -148,18 +169,21 @@ const FarmerRegister = () => {
         soil: values.soil,
         crops: cropName,
       };
-      axios
-        .post(
+      try {
+        const res = await axios.post(
           `https://farmer-registration-portal.herokuapp.com/register`,
           payload
-        )
-        .then(() => {
-          setOpenSuccess(true);
-        })
-        .catch((err) => setOpenError(true));
-      setTimeout(() => {
-        resetForm();
-      }, 4000);
+        );
+        setOpenSuccess(true);
+      } catch (err) {
+        console.log("====================================");
+        console.log(err);
+        console.log("====================================");
+        setOpenError(true);
+      }
+
+      resetForm();
+
       setSubmitting(false);
     },
   });
@@ -169,6 +193,7 @@ const FarmerRegister = () => {
       <div className="reg-main">
         <div className="form-wrapper">
           <div className="reg_heading">Register</div>
+
           <form className="form" onSubmit={formik.handleSubmit}>
             <div className="first_input">
               <Grid item xs={8}>
@@ -422,6 +447,7 @@ const FarmerRegister = () => {
                   error={formik.touched.area && Boolean(formik.errors.area)}
                   helperText={formik.touched.area && formik.errors.area}
                   variant="outlined"
+                  onKeyUp={addAcres}
                 />
               </Grid>
               <Grid item xs={4}>
@@ -491,25 +517,38 @@ const FarmerRegister = () => {
               </Grid>
             </div>
             <div className="btn-wrapper">
-              <button className="btn" type="submit">
+              <button
+                className={formik.isSubmitting ? "btn_loading" : "btn_submit"}
+                type="submit"
+              >
                 <span>{formik.isSubmitting ? "loading" : "Submit"}</span>
               </button>
             </div>
+            <div className="reset">
+              <Button onClick={reset} variant="contained" color="primary">
+                Reset
+              </Button>
+            </div>
           </form>
           <Snackbar
+            // anchorOrigin={("bottom", "center")}
             open={openError}
-            autoHideDuration={6000}
-            // onClose={handleClose}
+            autoHideDuration={4000}
+            onClose={handleClose}
           >
             <Alert severity="error">Something went wrong !</Alert>
           </Snackbar>
           <Snackbar
+            // anchorOrigin={("bottom", "center")}
             open={openSuccess}
-            autoHideDuration={6000}
-            // onClose={handleClose}
+            autoHideDuration={4000}
+            onClose={handleClose}
           >
             <Alert severity="success">Registration successful !</Alert>
           </Snackbar>
+          <Backdrop className={classes.backdrop} open={formik.isSubmitting}>
+            <CircularProgress color="inherit" />
+          </Backdrop>
         </div>
       </div>
     </>
