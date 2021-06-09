@@ -174,6 +174,7 @@ const FarmerRegister = () => {
           `https://farmer-registration-portal.herokuapp.com/register`,
           payload
         );
+        console.log(res);
         setOpenSuccess(true);
       } catch (err) {
         console.log("====================================");
